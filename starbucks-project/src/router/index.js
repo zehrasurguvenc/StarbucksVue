@@ -26,6 +26,11 @@ const routes = [
     path: "/e-gift",
     component: () => import("../pages/EGiftPage.vue"),
   },
+  {
+    name: "LoginPage",
+    path: "/login",
+    component: () => import("../pages/LoginPage.vue"),
+  },
 ];
 
 const router = createRouter({

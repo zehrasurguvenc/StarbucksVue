@@ -6,9 +6,14 @@ import { Quasar } from 'quasar'
 import router from "./router/index.js"
 // @ts-ignore
 import quasarUserOptions from './quasar-user-options'
+import {createPinia} from "pinia"
+
+const pinia = createPinia()
 
 const app = createApp(App)
+
 app.use(router)
+app.use(pinia)
 
 app.use(Quasar, quasarUserOptions)
 

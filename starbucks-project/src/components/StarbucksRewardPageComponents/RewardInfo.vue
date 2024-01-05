@@ -28,24 +28,30 @@
 </template>
 
 <script lang="ts">
-
 import { defineComponent, reactive, toRefs } from 'vue';
 
+import { DocumentData, collection, getDocs } from "firebase/firestore";
+
+// @ts-ignore
+import { db } from "@/firebase/index.js";
 
 
 export default defineComponent({
+
+    async created() {
+        const querySnapshot = await getDocs(collection(db, "rewards"));
+        querySnapshot.forEach((doc) => {
+
+            this.rewardList.push(doc.data())
+
+        });
+    },
 
     setup() {
 
         const state = reactive({
 
-            rewardList: [
-                { id: 1, url: "reward1.png", content: "Hoş Geldin 15⭐" },
-                { id: 2, url: "reward2.png", content: "15⭐ = İkram İçecek" },
-                { id: 3, url: "reward3.png", content: "İyi ki Doğdun!" },
-
-
-            ]
+            rewardList: [] as DocumentData[]
 
         })
 
