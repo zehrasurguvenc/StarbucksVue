@@ -4,21 +4,23 @@
             <q-page class="flex flex-center bg-grey-2">
                 <q-card class="q-pa-md shadow-2 my_card" bordered>
                     <q-card-section class="text-center">
-                        <div class="text-grey-9 text-h5 text-weight-bold">Giriş Yap</div>
+                        <div class="text-grey-9 text-h5 text-weight-bold">Kayıt Ol</div>
                     </q-card-section>
                     <q-card-section>
                         <q-input dense outlined v-model="userData.email" label="Email Adresi"></q-input>
                         <q-input dense outlined class="q-mt-md" v-model="userData.password" type="password"
                             label="Şifre"></q-input>
+                        <q-input dense outlined class="q-mt-md" v-model="userData.password2" type="password"
+                            label="Şifre tekrarı"></q-input>
                     </q-card-section>
                     <q-card-section>
-                        <q-btn @click="login(userData)" style="
-  border-radius: 8px;" color="dark" rounded size="md" label="Giriş yap" no-caps class="full-width"></q-btn>
+                        <q-btn @click="createUser(userData)" style="
+  border-radius: 8px;" color="dark" rounded size="md" label="Kayıt ol" no-caps class="full-width"></q-btn>
                     </q-card-section>
                     <q-card-section class="text-center q-pt-none">
-                        <div class="text-grey-8">Starbucks Hesabınız yok mu?
-                            <router-link class="text-dark text-weight-bold" :to="{ path: '/register' }">Kayıt
-                                ol</router-link>
+                        <div class="text-grey-8">Zaten Starbucks hesabım var,
+                            <router-link class="text-dark text-weight-bold" :to="{ path: '/login' }">Giriş yap</router-link>
+
                         </div>
                     </q-card-section>
 
@@ -39,10 +41,8 @@
 import { defineComponent, reactive, toRefs } from 'vue';
 import FooterSide from './FooterSide.vue';
 
-import { authStore } from "@/stores/index"
-import { mapActions,mapState } from 'pinia';
-
-
+import { mapState, mapActions } from 'pinia';
+import { authStore } from '@/stores';
 
 
 export default defineComponent({
@@ -50,35 +50,35 @@ export default defineComponent({
         const state = reactive({
             userData: {
                 email: "",
-                password: ""
+                password: "",
+                password2: ""
             }
+
         });
         return { ...toRefs(state) };
     },
 
     methods: {
         //@ts-ignore
-        async login(userData) {
+        async createUser(userData) {
 
-            this.setLogin(userData).then(() => {
+            this.setRegister(userData)
 
-                if (this.getUser !== null) {
+            setTimeout(() => {
+                if (this.getRegisterCheck) {
                     //@ts-ignore
-                    this.$router.push({ path: '/' })
+                    this.$router.push({ path: "/login" })
                 }
-
-            })
-
-
+            }, 1500);
         },
 
-        ...mapActions(authStore, ["setLogin"])
+        ...mapActions(authStore, ["setRegister"])
     },
 
-
-    computed:{
-        ...mapState(authStore,["getUser"])
+    computed: {
+        ...mapState(authStore, ["getRegisterCheck"])
     },
+
 
     components: { FooterSide }
 })

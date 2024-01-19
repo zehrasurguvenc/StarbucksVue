@@ -14,8 +14,7 @@ import CampaignCard from './CampaignCard.vue';
 import FeatureCard from './FeatureCard.vue';
 import FooterSide from './FooterSide.vue';
 import { mapState } from 'pinia';
-// @ts-ignore
-import { authStore } from "@/stores/index.js"
+import { authStore } from "@/stores/index"
 
 import { defineComponent} from 'vue';
 

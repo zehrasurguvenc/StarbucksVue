@@ -1,6 +1,6 @@
 <template>
     <div class="row q-my-lg bg-grey-1">
-        <div v-for="reward in rewardList" :key="reward.id" class="col-4 ">
+        <div v-for="reward in getRewardList" :key="reward.id" class="col-4 ">
            <a class="text-decoration-none" href="#">
             <div class="row items-center">
                 <img width="150" :src="require(`@/assets/starbucks-rewards/${reward?.url}`)">
@@ -24,39 +24,23 @@
 
 
     </div>
+    
 
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue';
+import { defineComponent } from 'vue';
 
-import { DocumentData, collection, getDocs } from "firebase/firestore";
+import { mapState } from 'pinia';
+import { authStore } from "@/stores/index"
 
-// @ts-ignore
-import { db } from "@/firebase/index.js";
 
 
 export default defineComponent({
 
-    async created() {
-        const querySnapshot = await getDocs(collection(db, "rewards"));
-        querySnapshot.forEach((doc) => {
 
-            this.rewardList.push(doc.data())
-
-        });
-    },
-
-    setup() {
-
-        const state = reactive({
-
-            rewardList: [] as DocumentData[]
-
-        })
-
-        return { ...toRefs(state) }
-
+    computed:{
+        ...mapState(authStore,["getRewardList"])
     }
 
 })

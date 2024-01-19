@@ -34,7 +34,7 @@
                     </li>
                 </ul>
             </div>
-            <div>
+            <div v-if="isAuth == false">
                 <ul class="flex items-baseline  list-style-none">
                     <li class="">
                         <router-link class="text-decoration-none" :to="{ path: '/login' }">
@@ -43,13 +43,57 @@
                                 label="Giriş" />
                         </router-link>
 
-                </li>
-                <li class="q-mx-sm ">
-                    <q-btn rounded color="black" class="text-weight-bold" label="Hemen Katıl" />
-                </li>
-            </ul>
+                    </li>
+                    <li class="q-mx-sm ">
+                        <router-link class="text-decoration-none" :to="{ path: '/register' }">
+
+                            <q-btn rounded color="black" class="text-weight-bold" label="Hemen Katıl" />
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+            <div v-if="isAuth == true">
+                <ul class="flex items-baseline  list-style-none">
+                    <li>
+                        <router-link class="text-decoration-none" :to="{ path: '/basket' }">
+
+                            <q-btn rounded color="white" class="text-weight-bold" text-color="black"  label="Sepet" />
+                        </router-link>
+                    </li>
+                    <li>
+                        <q-btn @click="logout" rounded color="red" class="text-weight-bold" text-color="black" label="Çıkış Yap" />
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-</div></template>
+</template>
+
+<script lang="ts">
+
+import { defineComponent } from 'vue';
+import { mapState, mapActions } from 'pinia';
+
+import { authStore } from "@/stores/index"
+
+export default defineComponent({
+
+
+    methods: {
+
+        logout() {
+            this.setUser(null)
+        },
+
+        ...mapActions(authStore, ["setUser"])
+    },
+
+    computed: {
+        ...mapState(authStore, ["isAuth"])
+    }
+
+
+})
+</script>
 
 

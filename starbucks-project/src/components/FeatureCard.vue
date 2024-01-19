@@ -17,32 +17,37 @@
 <script lang="ts">
 import FeatureCardItem from '@/types/FeatureCardItem';
 import { defineComponent, reactive, toRefs } from 'vue';
+import { mapActions,mapState } from 'pinia';
+import { authStore } from "@/stores/index"
 
-import { collection, getDocs } from "firebase/firestore";
-
-// @ts-ignore
-import { db } from "../firebase/index.js";
 
 export default defineComponent({
-
+ 
     async created() {
-        const querySnapshot = await getDocs(collection(db, "features"));
-        querySnapshot.forEach((doc) => {
-
-            this.featureCardList.push(doc.data() as FeatureCardItem)
-
-        });
+        this.setFeatureCard()
+        this.featureCardList = this.getFeatureCardList
+    },
+    
+    unmounted(){
+        this.clearFeatureCardList()
+        this.featureCardList = this.getFeatureCardList
     },
 
+    methods:{
+        ...mapActions(authStore,["setFeatureCard","clearFeatureCardList"])
+    },
 
     setup() {
-
         const state = reactive({
             featureCardList: [] as FeatureCardItem[],
         })
 
         return { ...toRefs(state) }
     },
+
+    computed:{
+        ...mapState(authStore,["getFeatureCardList"])
+    }
 
 })
 </script>
